@@ -1,0 +1,13 @@
+This project allows one to generate distributions in network and find the best 
+local model approaching these distributions with a neural network based method.
+
+Project made by Massi Rashidi and Antoine Girardin.
+
+The file main_generate_distributions.py computes distributions for given 
+networks, measurements and states.
+
+The file main_find_local_models.py run the neural network to find the best local model.
+
+The file main_read_results.py reads the model found in main_find_local_models.py.
+
+The file get_precomputed_results.py reads the results obtained previously.
