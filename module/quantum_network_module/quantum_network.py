@@ -1,14 +1,9 @@
 from module.quantum_network_module.utils.combinaison import possible_combinations_povm, possible_combinations_list
 from module.quantum_network_module.utils.permutation import fct_matrice_permutation, matrix_representation, sources_permut, povm_permut, fct_permutation_povm, generate_tensor_product_dims
-from module.quantum_network_module.utils.display import display_network
 from module.quantum_network_module.utils.array import assure_numpy_arrays
 import numpy as np
-# import matplotlib
-# # Force matplotlib to use a specific GUI backend, e.g., 'TkAgg'
-# matplotlib.use('TkAgg')
 
-
-def calculer_proba(source_tensor, list_povm, combinaisons_input, combinaisons_output, tuple_info_povm=None):
+def compute_probs(source_tensor, list_povm, combinaisons_input, combinaisons_output, tuple_info_povm=None):
     """
     Calculates the probability for a given configuration of a quantum network.
 
@@ -65,14 +60,14 @@ def is_condition_satisfied(source_tensor, list_povm, combinaisons_output, tuple_
     
     # Single combination scenario: directly calculate and print the probability
     if len(combinaisons_input) == 1:
-        prob_result = calculer_proba(source_tensor, list_povm, combinaisons_input[0], combinaisons_output, tuple_info_povm)
+        prob_result = compute_probs(source_tensor, list_povm, combinaisons_input[0], combinaisons_output, tuple_info_povm)
         #print(f"p{combinaisons_output} = {prob_result}") ## print the probability
         return [prob_result]
     else:
         # Multiple combinations scenario: calculate conditional probabilities
         result_proba_list = []
         for combin_input in combinaisons_input:
-            prob_result = calculer_proba(source_tensor, list_povm, combin_input, combinaisons_output, tuple_info_povm)
+            prob_result = compute_probs(source_tensor, list_povm, combin_input, combinaisons_output, tuple_info_povm)
             #print(f"p({', '.join(map(str, combinaisons_output))} | {', '.join(map(str, combin_input))}) = {prob_result}") ## print the probability
             result_proba_list.append(prob_result)
         
@@ -88,28 +83,20 @@ def noise(rho, noise):
 
 
 
-def quantum_network_fct(graph, source_dims_list, povm_list, povm_dims_list=None, permutation=None):
+def quantum_network_fct(source_dims_list, povm_matrices, permutation):
     """
     Calculates the probability distribution for a given quantum network.
 
     Parameters:
-    - graph : Dictionary representing connections between sources and measurements.
     - source_dims_list : A list of tuples indicating the sources and their dimensions.
-    - povm_list : A list of tuples with each tuple containing an identifier and a matrix representing a POVM.
-    - povm_dims_list : Optional list of dimensions for the POVMs; used for advanced configurations.
-    - permutation : Optional list of [permutation_povm, permutation_sources], to specify a specific permutation
+    - povm_matrices : A list with all measurements of the parties as list of matrices representing a POVM.
+    - permutation : A list [permutation_povm, permutation_sources], to give the permutation to apply
 
     Returns:
     - A list of probability distributions across the network based on the provided POVMs and source configuration.
     """
-    # Optional: Visual display of the network (uncomment if visualization is needed)
-    # display_network(graph)
 
-    # Generate a permutation matrix based on the network graph and POVMs
-    if permutation is None:
-        permutation_matrix = fct_matrice_permutation(matrix_representation(graph, povm_list))
-    else:
-        permutation_matrix = permutation[1]
+    permutation_matrix = permutation[1]
     print("Source permutation matrix:", permutation_matrix)
 
     # Assure all source dimensions are numpy arrays
@@ -118,35 +105,21 @@ def quantum_network_fct(graph, source_dims_list, povm_list, povm_dims_list=None,
     # Permute source tensors according to the permutation matrix
     source_tensor_permut = sources_permut(permutation_matrix, source_dims_list)
 
-    # Extract matrices from povm_list
-    povm_matrices = [matrice for _, matrice in povm_list]
-
     # Generate all possible combinations of outcomes for the given POVMs
     combinations = possible_combinations_povm(povm_matrices)
 
     probability_distribution = []
 
-    if povm_dims_list:
-        # If POVM dimensions are provided, generate tensor product dimensions for them
-        input_dim_povm = generate_tensor_product_dims(source_dims_list)
+    input_dim_povm = generate_tensor_product_dims(source_dims_list)
 
-        # Generate a permutation for POVMs
-        if permutation is None:
-            permutation_povm = fct_permutation_povm(povm_dims_list)
-        else:
-            permutation_povm = permutation[0]
-        tuple_info_povm = (permutation_povm, input_dim_povm)
+    permutation_povm = permutation[0]
+    tuple_info_povm = (permutation_povm, input_dim_povm)
 
-        print("POVM permutation matrix:", permutation_povm)
+    print("POVM permutation matrix:", permutation_povm)
 
-        # Calculate probabilities for each combination considering POVM permutations
-        for combination in combinations:
-            probability_distribution += is_condition_satisfied(source_tensor_permut, povm_matrices, combination, tuple_info_povm)
-    else:
-        print("POVM permutation matrix: default (alphabetical order)")
-        # Calculate probabilities for each combination without specific POVM permutations
-        for combination in combinations:
-            probability_distribution += is_condition_satisfied(source_tensor_permut, povm_matrices, combination)
+    # Calculate probabilities for each combination considering POVM permutations
+    for combination in combinations:
+        probability_distribution += is_condition_satisfied(source_tensor_permut, povm_matrices, combination, tuple_info_povm)
 
     return probability_distribution
 

@@ -102,3 +102,4 @@ def plot_distributions(target_distribution, joint_probabilities, list_value):
     ax.legend()
 
     plt.show()
+    
