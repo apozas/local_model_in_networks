@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jul 26 14:25:58 2024
-
-@author: Girardin
+definition of useful states
 """
 import numpy as np
 

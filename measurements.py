@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-definition of some usefull measurements
+definition of some useful measurements
 """
 
 import numpy as np
@@ -39,7 +39,6 @@ def elegant_family(t):
     M3 = m3*hconj(m3)
     
     POVM = [[M0, M1, M2, M3]]
-    # print(M0 +M1+M2+M3)
     return POVM
     
 def TCfamily(u2):
@@ -57,7 +56,6 @@ def TCfamily(u2):
     M2 = m2*hconj(m2)
     M3 = m3*hconj(m3)
     POVM = [[M0, M1, M2, M3]]
-    # print(M0 +M1+M2+M3)
     return POVM
 
 ## 3 partite measurements (8 outcomes)
@@ -106,7 +104,33 @@ def GHZ_basis_measurementv2():
         Mout.append(Mi*hconj(Mi))
         
     return [Mout]
+   
+# def TCinspired3parties():
+#     ket000 = np.array([1,0,0,0,0,0,0,0])
+#     ket111 = np.array([0,0,0,0,0,0,0,1])
+#     ket001 = np.array([0,1,0,0,0,0,0,0])
+#     ket010 = np.array([0,0,1,0,0,0,0,0])
+#     ket100 = np.array([0,0,0,0,1,0,0,0])    
+#     ket011 = np.array([0,0,0,1,0,0,0,0])
+#     ket101 = np.array([0,0,0,0,0,1,0,0])
+#     ket110 = np.array([0,0,0,0,0,0,1,0])
+#     w=np.exp(1j*2*np.pi/3)
     
+#     M0 = ket000
+#     M1 = ket111
+#     M2 = 1/np.sqrt(3) * (1 * ket001 + w * ket010 + w**2 * ket100)
+#     M3 = 1/np.sqrt(3) * (w * ket001 + w**2 * ket010 + 1 * ket100)
+#     M4 = 1/np.sqrt(3) * (w**2 * ket001 + 1 * ket010 + w * ket100)
+#     #find three other orthogonal states (should it be combination of ket011 ket 101 ket 110 ?)
+#     M5 = 1/np.sqrt(3) * (1 * ket011 + w * ket101 + w**2 * ket110) #can this work ??
+#     M6 = 1/np.sqrt(3) * (w * ket011 + w**2 * ket101 + 1 * ket110)
+#     M7 = 1/np.sqrt(3) * (w**2 * ket011 + 1 * ket101 + w * ket110)
+#     Mout = []
+#     for Mi in [M0, M1, M2, M3, M4, M5, M6, M7]:
+#         Mi = np.reshape(Mi, [1,8]).astype("complex128")
+#         Mout.append(Mi*hconj(Mi))
+#     return [Mout]
+ 
 def TCinspired3parties():
     ket000 = np.array([1,0,0,0,0,0,0,0])
     ket111 = np.array([0,0,0,0,0,0,0,1])
@@ -121,12 +145,11 @@ def TCinspired3parties():
     M0 = ket000
     M1 = ket111
     M2 = 1/np.sqrt(3) * (1 * ket001 + w * ket010 + w**2 * ket100)
-    M3 = 1/np.sqrt(3) * (w * ket001 + w**2 * ket010 + 1 * ket100)
-    M4 = 1/np.sqrt(3) * (w**2 * ket001 + 1 * ket010 + w * ket100)
-    #find three other orthogonal states (should it be combination of ket011 ket 101 ket 110 ?)
-    M5 = 1/np.sqrt(3) * (1 * ket011 + w * ket101 + w**2 * ket110) #can this work ??
-    M6 = 1/np.sqrt(3) * (w * ket011 + w**2 * ket101 + 1 * ket110)
-    M7 = 1/np.sqrt(3) * (w**2 * ket011 + 1 * ket101 + w * ket110)
+    M3 = 1/np.sqrt(3) * (1 * ket001 + w**2 * ket010 + w * ket100)
+    M4 = 1/np.sqrt(3) * (1 * ket001 + 1 * ket010 + 1 * ket100)
+    M5 = 1/np.sqrt(3) * (1 * ket011 + w * ket101 + w**2 * ket110)
+    M6 = 1/np.sqrt(3) * (1 * ket011 + w**2 * ket101 + w * ket110)
+    M7 = 1/np.sqrt(3) * (1 * ket011 + 1* ket101 + 1 * ket110)
     Mout = []
     for Mi in [M0, M1, M2, M3, M4, M5, M6, M7]:
         Mi = np.reshape(Mi, [1,8]).astype("complex128")
@@ -177,8 +200,10 @@ def get_measurement2(n, i):
         raise(ValueError("2 or 3 party measurement only"))
             
 if __name__=="__main__":
+    ## test that this measurement sum to identity
     Mout = TCinspired3parties()
     s=np.zeros([8,8]).astype("complex128")
     for i in range(8):
         s+=Mout[0][i]
+    print(s)
     
