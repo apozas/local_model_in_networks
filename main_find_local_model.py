@@ -1,7 +1,7 @@
-from module.neural_network_module_pytorch.build_nn import NeuralNetwork, train_model_and_save, load_model_and_optimizer, evaluate_model, load_model_without_checkpoints, evaluate_model_return_dist
+from module.nn_sampling.build_nn import NeuralNetwork, train_model_and_save, load_model_and_optimizer, evaluate_model, load_model_without_checkpoints, evaluate_model_return_dist
 import numpy as np
 import shutil  
-from networks import get_network
+from utils.networks import get_network
 import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("device used :", device)
@@ -80,7 +80,7 @@ if __name__=="__main__":
     # else:
     #     print("error with sys.argv: len(sys.argv)= ", len(sys.argv))
         
-    training_dist = "kl" #'kl' for Kullback–Leibler, 'eucl' for euclidean. Define custom distance in module/neural_network_module_pytorch/utils/torch_probabilites.py
+    training_dist = "kl" #'kl' for Kullback–Leibler, 'eucl' for euclidean. Define custom distance in module/nn_sampling/utils/torch_probabilites.py
     n_training_steps = 10000
     folder = "model/test/"
     name_model = "model_test"
@@ -88,7 +88,7 @@ if __name__=="__main__":
     depth=4
     opt=1 #an option to sample the local variable (input of the neural network)
     n_retries=3 #number of times we retrain the target. 0 for training only once
-    start_from_other_path = None #"model/test/model_test.pth" #path to start from (parameters of this model will replace the given ones)
+    start_from_other_path = None # "model/test/model_test.pth" #path to start from (parameters of this model will replace the given ones)
     threshold = 1e-6 #distance at which we stop training
     n_steps_reevaluate = 10000 #after how many steps we reevaluate the best model (to avoid being stuck because of a lucky evaluation)
     
