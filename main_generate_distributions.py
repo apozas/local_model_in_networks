@@ -8,9 +8,9 @@ import os
             
 from module.quantum_network_module.quantum_network import quantum_network_fct
 
-from measurements import get_measurement, TCfamily
+from utils.measurements import get_measurement, TCfamily
 
-from states import get_state
+from utils.states import get_state
 #######################################################
 
 def save_to_file(d, path):
@@ -33,13 +33,13 @@ if __name__=="__main__":
     n_sources=3
     n_parties=3
     
-    ## choose the state distributed by the sources (see states.py for some default states). 
+    ## choose the state distributed by the sources (see utils.states.py for some default states). 
     ## states should be given as density matrices.
     ## v is the visibility of the state mixed with white noise
     ## the format is a Tuple of the density matrix and a list of the dimensions of each subsystem: (density_matrix, [dimension_subsystem1, dimension_subsystem2, ...])
     sources = [get_state(0, v=1) for i in range(n_sources)]
     
-    ## choose the measurement performed by the parties (see measurements.py for some default measurements)
+    ## choose the measurement performed by the parties (see utils.measurements.py for some default measurements)
     measurements = [TCfamily(np.sqrt(0.785)) for i in range(n_parties)]
     # measurements = [get_measurement(0) for i in range(n_parties)]
     

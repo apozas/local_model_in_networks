@@ -3,8 +3,8 @@
 example on how to read the model we found with main_find_local_models.py
 """
 
-from module.neural_network_module_pytorch.build_nn import NeuralNetwork, get_dist_from_model, evaluate_model_return_distribution, evaluate_model_return_dist, plot_distribution, load_model_and_optimizer
-from module.neural_network_module_pytorch.build_nn import evaluate_model
+from module.nn_sampling.build_nn import NeuralNetwork, get_dist_from_model, evaluate_model_return_distribution, evaluate_model_return_dist, plot_distribution, load_model_and_optimizer
+from module.nn_sampling.build_nn import evaluate_model
 
 import numpy as np
 import matplotlib.pyplot as plt 
@@ -63,7 +63,7 @@ if __name__=="__main__":
     load_model_and_optimizer(model, "model/test/model_test.pth")
     # load_model_and_optimizer(model, "model/tetrahedron/model.pth")
     
-    from module.neural_network_module_pytorch.build_nn import plot_strats
+    from module.nn_sampling.build_nn import plot_strats
     ## the party, source_x and source_y should be the name as strings as defined in model.config
     
     ## example for the triangle

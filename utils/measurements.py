@@ -4,7 +4,6 @@ definition of some useful measurements
 """
 
 import numpy as np
-from itertools import product
 
 def hconj(A):
     return np.transpose(np.conj(A))
@@ -41,11 +40,8 @@ def elegant_family(t):
     POVM = [[M0, M1, M2, M3]]
     return POVM
     
-def TCfamily(u2):
-    u=0
-    # u=.5
-    # u2=np.sqrt(0.85)
-    # u2=np.sqrt(0.63)
+def TCfamily(u2, u=0):
+    """family of token counting measurement. First parameter mixes the cases when receiving one token, the second one mixes the results when receiving 0 and 2 tokens"""
     m2=np.array([[u,0,0,np.sqrt(1-u**2)]])
     m3=np.array([[np.sqrt(1-u**2),0,0,-u]])
     m0=np.array([[0,u2,np.sqrt(1-u2**2),0]])
@@ -59,26 +55,6 @@ def TCfamily(u2):
     return POVM
 
 ## 3 partite measurements (8 outcomes)
-
-def GHZ_basis_measurementv1(): #discussed with Alex (doesnt sum to Id)
-    M=[]
-    GHZ = np.zeros([8,8])
-    GHZ[0][0]=1/2
-    GHZ[7][7]=1/2
-    GHZ[0][7]=1/2
-    GHZ[7][0]=1/2
-    Z=np.array([[1, 0],[0,-1]])
-    X=np.array([[0,1],[1,0]])
-    for a0, a1, a2 in product([0,1], repeat=3):
-        Mi=np.dot(
-            np.kron(
-            np.kron(np.linalg.matrix_power(Z, a0), 
-                    np.linalg.matrix_power(X, a1)), 
-            np.linalg.matrix_power(X, a2)), 
-            GHZ)
-        M.append(Mi)
-    
-    return [M]
     
 def GHZ_basis_measurementv2():
     ket000 = np.array([1,0,0,0,0,0,0,0])
@@ -104,32 +80,7 @@ def GHZ_basis_measurementv2():
         Mout.append(Mi*hconj(Mi))
         
     return [Mout]
-   
-# def TCinspired3parties():
-#     ket000 = np.array([1,0,0,0,0,0,0,0])
-#     ket111 = np.array([0,0,0,0,0,0,0,1])
-#     ket001 = np.array([0,1,0,0,0,0,0,0])
-#     ket010 = np.array([0,0,1,0,0,0,0,0])
-#     ket100 = np.array([0,0,0,0,1,0,0,0])    
-#     ket011 = np.array([0,0,0,1,0,0,0,0])
-#     ket101 = np.array([0,0,0,0,0,1,0,0])
-#     ket110 = np.array([0,0,0,0,0,0,1,0])
-#     w=np.exp(1j*2*np.pi/3)
-    
-#     M0 = ket000
-#     M1 = ket111
-#     M2 = 1/np.sqrt(3) * (1 * ket001 + w * ket010 + w**2 * ket100)
-#     M3 = 1/np.sqrt(3) * (w * ket001 + w**2 * ket010 + 1 * ket100)
-#     M4 = 1/np.sqrt(3) * (w**2 * ket001 + 1 * ket010 + w * ket100)
-#     #find three other orthogonal states (should it be combination of ket011 ket 101 ket 110 ?)
-#     M5 = 1/np.sqrt(3) * (1 * ket011 + w * ket101 + w**2 * ket110) #can this work ??
-#     M6 = 1/np.sqrt(3) * (w * ket011 + w**2 * ket101 + 1 * ket110)
-#     M7 = 1/np.sqrt(3) * (w**2 * ket011 + 1 * ket101 + w * ket110)
-#     Mout = []
-#     for Mi in [M0, M1, M2, M3, M4, M5, M6, M7]:
-#         Mi = np.reshape(Mi, [1,8]).astype("complex128")
-#         Mout.append(Mi*hconj(Mi))
-#     return [Mout]
+
  
 def TCinspired3parties():
     ket000 = np.array([1,0,0,0,0,0,0,0])

@@ -9,3 +9,10 @@ networks, measurements and states.
 The file main_find_local_models.py run the neural network to find the best local model.
 
 The file main_read_results.py reads the model found in main_find_local_models.py.
+
+The folder utils contains the definition of some useful measurement, networks and states.
+
+The folder main_codes_for_exact_strategies contains an example to use another approach to
+find local model in networks. It build explicit strategies with a finite cardinalities of 
+the symbols distributed by the sources. This method works best for small network with few 
+outputs, like the triangle with two outputs.
