@@ -15,5 +15,5 @@ The folder utils contains the definition of some useful measurement, networks an
 The folder main_codes_for_exact_strategies contains an example to use another approach to
 find local model in networks. It build explicit strategies with a finite cardinalities of 
 the symbols distributed by the sources. This method works best for small network with few 
-
 outputs, like the triangle with two outputs.
+
