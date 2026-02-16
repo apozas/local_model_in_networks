@@ -257,7 +257,7 @@ def save_model_and_optimizer(model, path):
 
 def load_model_and_optimizer(model, path='model/model.pth', print_in_console=True):
     model.to(device)
-    checkpoint = torch.load(path, map_location=device)
+    checkpoint = torch.load(path, map_location=device, weights_only=False)
     
     model.best_dist = checkpoint.get('best_dist', float('inf'))
     model.target_distribution = checkpoint.get('target_distribution')
@@ -280,7 +280,7 @@ def load_model_and_optimizer(model, path='model/model.pth', print_in_console=Tru
 
 def load_model_without_checkpoints(model, n_samples, path='model/model.pth', dist =None, print_in_console=True):
     model.to(device)
-    checkpoint = torch.load(path, map_location=device)
+    checkpoint = torch.load(path, map_location=device, weights_only=False)
 
     model.target_distribution = checkpoint.get('target_distribution')
     model.width = checkpoint.get('width', int(60))
