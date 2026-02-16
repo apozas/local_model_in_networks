@@ -50,10 +50,9 @@ class NeuralNetwork(nn.Module):
             else:
                 hidden_layer_size = self.width
                 
-            
             self.input_width[party] = nn.Linear(input_dim, hidden_layer_size)
             
-            hidden_width = []
+            hidden_width = [nn.ReLU()]
             for _ in range(self.depth):
                 hidden_width.append(nn.Linear(hidden_layer_size, hidden_layer_size))
                 hidden_width.append(nn.ReLU())
