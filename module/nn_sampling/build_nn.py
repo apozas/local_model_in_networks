@@ -316,7 +316,7 @@ def get_dist_from_model(path='model/model.pth'):
     model=NeuralNetwork()
     load_model_and_optimizer(model, path, print_in_console=False)
 
-    return model.best_dist
+    return model.best_dist.detach().cpu()
 
 
 def evaluate_model(n_samples, model=None, path=None):
