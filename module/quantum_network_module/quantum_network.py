@@ -74,12 +74,11 @@ def is_condition_satisfied(source_tensor, list_povm, combinaisons_output, tuple_
         return result_proba_list
        
 
-def noise(rho, noise):
-    matrice_I = np.eye(4)
-    norm = np.linalg.norm(matrice_I)
-    matriceI_norm = matrice_I / norm
+def werner(rho, vis):
+    dim = rho.shape[0]
+    uniform = np.eye(dim) / dim
     rho = np.array(rho)  # Convert input to a NumPy array if it isn't one already
-    return rho * noise + matriceI_norm * (1-noise)
+    return rho * vis + uniform * (1-vis)
 
 
 
